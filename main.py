@@ -47,8 +47,8 @@ def level_two():
         "p2_move_count": 0,
         "p3_move_count": 0,
         "p4_move_count": 0,
-        "grid_size_x": 0,
-        "grid_size_y": 0,
+        "grid_size_x": grid_size_x.get(),
+        "grid_size_y": grid_size_y.get(),
     }
     dynamicDataFrame(sim_data)
 
@@ -60,8 +60,8 @@ def level_three():
         "p2_move_count": 0,
         "p3_move_count": 0,
         "p4_move_count": 0,
-        "grid_size_x": 0,
-        "grid_size_y": 0,
+        "grid_size_x": grid_size_x.get(),
+        "grid_size_y": grid_size_y.get(),
     }
     # experiements, different protocols for moving
     dynamicDataFrame(sim_data)
@@ -87,7 +87,9 @@ def gradeCallback():
 root = Tk() # serves as main window of application
 root.geometry("800x800")
 
-num_players=IntVar()
+num_players=IntVar() # number of players variable
+grid_size_x=IntVar() # Grid size X value
+grid_size_y=IntVar() # Grid size Y value
 
 select_grade_frame = Frame(root, bg="white")
 grade = StringVar() # variable holding selected grade
@@ -103,6 +105,12 @@ Entry(select_grade_frame,textvariable=num_players).pack()
 Radiobutton(select_grade_frame, text='Grades 6-8', value='6-8', variable=grade).pack()
 Label(select_grade_frame, text="Players: ").pack()
 Entry(select_grade_frame,textvariable=num_players).pack()
+
+Label(select_grade_frame, text="Grid size: ").pack()
+Label(select_grade_frame, text="x: ").pack()
+Entry(select_grade_frame,textvariable=grid_size_x).pack()
+Label(select_grade_frame, text="y: ").pack()
+Entry(select_grade_frame,textvariable=grid_size_y).pack()
 
 submit_button = Button(select_grade_frame, text="Let's go!", command=gradeCallback)
 submit_button.pack()
