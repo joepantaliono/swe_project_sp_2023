@@ -13,13 +13,14 @@ the appropriate level and interact with the simulation
 """
 import random
 
+
 def level_one():
     # Define the grid size
     grid_size = 10
 
     # Starting position of the two players
-    player_1_pos = (0,0)
-    player_2_pos = (grid_size - 1, grid_size -1)
+    player_1_pos = (0, 0)
+    player_2_pos = (grid_size - 1, grid_size - 1)
 
     # Counter for players moves
     player1_moves = 0
@@ -49,31 +50,145 @@ def level_one():
         return player_1 == player_2
 
         # Main loop
+
     while True:
-            # Reset the players
-            player_1 = player_1_pos
-            player_2 = player_2_pos
-            player1_moves = 0
-            player2_moves = 0
+        # Reset the players
+        player_1 = player_1_pos
+        player_2 = player_2_pos
+        player1_moves = 0
+        player2_moves = 0
 
-            # Loop untill the players find each other
-            while not check_find(player_1, player_2):
-                player_1 = move_players(player_1_pos)
-                player1_moves += 1
-                player_2 = move_players(player_2)
-                player2_moves += 1
+        # Loop untill the players find each other
+        while not check_find(player_1, player_2):
+            player_1 = move_players(player_1_pos)
+            player1_moves += 1
+            player_2 = move_players(player_2)
+            player2_moves += 1
 
-            # Printing out number of moves for the players
-            print("The two players found each other after {} moves.".format(player1_moves + player2_moves))
-            print("Player 1 made {} moves, and Player 2 made {} moves.".format(player1_moves, player2_moves))
+        # Printing out number of moves for the players
+        print("The two players found each other after {} moves.".format(player1_moves + player2_moves))
+        print("Player 1 made {} moves, and Player 2 made {} moves.".format(player1_moves, player2_moves))
 
-            # Ask player if they want to play again
-            play_again = input("Would you like to play again? (yes/no) ")
-            if play_again.lower() != "yes":
-                break
+        # Ask player if they want to play again
+        play_again = input("Would you like to play again? (yes/no) ")
+        if play_again.lower() != "yes":
+            break
+
+
+def level_two():
+    # Function to build the grid
+    def build_grid(size):
+        grid = []
+        for row in range(size):
+            grid.append([])
+            for colum in range(size):
+                grid[row].append('.')
+        return grid
+
+    def get_players():
+        while True:
+            try:
+                num_players = int(input("How many players? (1-4): "))
+                if num_players < 1 or num_players > 4:
+                    print("Invalid number of players.")
+                else:
+                    return num_players
+            except ValueError:
+                print("Invalid input. Please enter a number 1-4")
+
+    def starting_positions(num_players, size):
+        positions = []
+        for i in range(num_players):
+            while True:
+                try:
+                    row = int(input(f"Enter the row for player {i + 1}: "))
+                    column = int(input(f"Enter the column for player {i + 1}: "))
+                    if row < 0 or row >= size or column < 0 or column >= size:
+                        print("Invalid position. Please choose a position within the grid.")
+                    elif (row, column) in positions:
+                        print("Position already taken. Please choose a different position.")
+                    else:
+                        positions.append((row, column))
+                        break
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+        return positions
+
+    def adjacent(pos_1, pos_2):
+        row_1, col_1 = pos_1
+        row_2, col_2 = pos_2
+        if abs(row_1 - row_2) <= 1 and abs(col_1 - col_2) <= 1:
+            return True
+        return False
+
+    # Function to play the game.
+    def play_game(grid, positions):
+        num_players = len(positions)
+        moves = [0] * num_players
+        found = [False] * num_players
+        moves_to_find = [0] * num_players
+
+        while not all(found):
+            for i in range(num_players):
+                if not found[i]:
+                    moves[i] += 1
+                    row, column = positions[i]
+                    direction = random.choice(['up', 'down', 'left', 'right'])
+                    if direction == 'up':
+                        if row > 0:
+                            row -= 1
+                    elif direction == 'down':
+                        if row < len(grid) - 1:
+                            row += 1
+                    elif direction == 'left':
+                        if column > 0:
+                            column -= 1
+                    elif direction == 'right':
+                        if column < len(grid[0]) - 1:
+                            column += 1
+                    positions[i] = (row, column)
+
+                    for j in range(num_players):
+                        if not found[j] and i != j and adjacent(positions[i], positions[j]):
+                            found[j] = True
+                            moves_to_find[j] = moves[i]
+
+                    if all(found):
+                        break
+
+        print("Game Over!")
+        for i in range(num_players):
+            print(f"Player {i + 1}: {moves[i]}, {moves_to_find[i]} moves to find.")
+        print()
+
+    # Main game loop
+    while True:
+        size = int(input("What is the grid size? "))
+        num_players = get_players()
+        positions = starting_positions(num_players, size)
+        grid = build_grid(size)
+
+        #Place players on the grid
+        for i, position in enumerate(positions):
+            row, column = position
+            grid[row][column] = str(i+1)
+
+        print("Starting positions:")
+        for row in grid:
+            print(" ".join(row))
+
+
+        play_game(grid, positions)
+
+        replay = input("Would you like to play again? (y/n) ")
+        if replay.lower() != 'y':
+            break
+
+
+
 
 # Creates the game for grades 3-5
-def level_two():
+def level_three():
     # Function to build the grid
     def build_grid(rows, cols):
         return [['.' for j in range(cols)] for i in range(rows)]
@@ -156,12 +271,14 @@ def level_two():
                 break
     if __name__ == '__main__':
         main()
+
+
+
 # Loop asking students which version of the game they want to play.
-user = input("Select 1 for K-2 or 2 for 3-5: ")
+user = input("Select 1 for K-2, 2 for 3-5, or 3 for 6-8: ")
 if user == "1":
     level_one()
-else:
+elif user == "2":
     level_two()
-
-
-
+else:
+    level_three()
