@@ -18,7 +18,7 @@ def sim_one():
     sim_data = {
         "num_players": 2,
         "p1_move_count": 0,
-        "p2_move_count": 0
+        "p2_move_count": 0,
     }
     # Define the grid size
     grid_size = 10
@@ -70,9 +70,9 @@ def sim_one():
             player1_moves += 1
             player_2 = move_players(player_2)
             player2_moves += 1
-        
+
         sim_data["p1_move_count"] = player1_moves
-        sim_data["p2_move_count"] = player1_moves
+        sim_data["p2_move_count"] = player2_moves
         return sim_data
 
 # Creates game for grades 3-5.
