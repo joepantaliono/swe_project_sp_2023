@@ -1,4 +1,5 @@
 from tkinter import *
+from Wandering_Text_Game import *
 
 def dynamicDataFrame(sim_data):
     data_frame = Frame(root, bg="white")
@@ -26,11 +27,7 @@ def dynamicDataFrame(sim_data):
 
 def level_one():
     """grade k-2 logic here, return simulation output"""
-    sim_data = {
-        "num_players": 2,
-        "p1_move_count": 0,
-        "p2_move_count": 0
-    }
+    sim_data = sim_one()
     # only 2 players, just display 2 move counts
     data_frame = Frame(root, bg="white")
     Label(data_frame, text="Number of players: " + str(sim_data["num_players"])).pack()

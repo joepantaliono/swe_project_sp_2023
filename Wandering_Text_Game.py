@@ -14,7 +14,12 @@ the appropriate level and interact with the simulation
 import random
 
 # Creates game for grades K-2
-def level_one():
+def sim_one():
+    sim_data = {
+        "num_players": 2,
+        "p1_move_count": 0,
+        "p2_move_count": 0
+    }
     # Define the grid size
     grid_size = 10
 
@@ -65,17 +70,10 @@ def level_one():
             player1_moves += 1
             player_2 = move_players(player_2)
             player2_moves += 1
-
-        # Printing out number of moves for the players
-        print("The two players found each other after {} moves.".format(
-            player1_moves + player2_moves))
-        print("Player 1 made {} moves, and Player 2 made {} moves.".format(
-            player1_moves, player2_moves))
-
-        # Ask player if they want to play again
-        play_again = input("Would you like to play again? (yes/no) ")
-        if play_again.lower() != "yes":
-            break
+        
+        sim_data["p1_move_count"] = player1_moves
+        sim_data["p2_move_count"] = player1_moves
+        return sim_data
 
 # Creates game for grades 3-5.
 def level_two():
@@ -307,13 +305,3 @@ def level_three():
                 break
     if __name__ == '__main__':
         main()
-
-
-# Loop asking students which version of the game they want to play.
-user = input("Select 1 for K-2, 2 for 3-5, or 3 for 6-8: ")
-if user == "1":
-    level_one()
-elif user == "2":
-    level_two()
-else:
-    level_three()
