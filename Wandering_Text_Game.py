@@ -13,7 +13,7 @@ the appropriate level and interact with the simulation
 """
 import random
 
-
+# Creates game for grades K-2
 def level_one():
     # Define the grid size
     grid_size = 10
@@ -77,7 +77,7 @@ def level_one():
         if play_again.lower() != "yes":
             break
 
-
+# Creates game for grades 3-5.
 def level_two():
     # Function to build the grid
     def build_grid(size):
@@ -163,6 +163,26 @@ def level_two():
                     if all(found):
                         break
 
+            if found.count(False) == 1:
+                remaining_player = found.index(False)
+                for i in range(num_players):
+                    if i != remaining_player:
+                        row_dir = 1 if positions[remaining_player][0] < positions[i][0] else -1
+                        col_dir = 1 if positions[remaining_player][1] < positions[i][1] else -1
+
+                        while not adjacent(positions[remaining_player], positions[i]):
+                            row, col = positions[remaining_player]
+                            if abs(row - positions[i][0]) > abs(col - positions[i][1]):
+                                row += row_dir
+                            else:
+                                col += col_dir
+                            positions[remaining_player] = (row, col)
+                            moves[remaining_player] += 1
+
+                        found[remaining_player] = True
+                        moves_to_find[remaining_player] = moves[i]
+
+                        break
         print("Game Over!")
         for i in range(num_players):
             print(
@@ -192,7 +212,7 @@ def level_two():
             break
 
 
-# Creates the game for grades 3-5
+# Creates the game for grades 6-8
 def level_three():
     # Function to build the grid
     def build_grid(rows, cols):
