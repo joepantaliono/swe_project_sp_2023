@@ -151,6 +151,7 @@ def level_two():
                     for j in range(num_players):
                         if not found[j] and i != j and adjacent(positions[i], positions[j]):
                             found[j] = True
+                            found[i] = True
                             moves_to_find[j] = moves[i]
 
                     if all(found):
