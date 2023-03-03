@@ -41,7 +41,8 @@ def level_one():
             new_position = (player_pos[0] + 1, player_pos[1])
 
         # If the new position is out of the grid move to the other side of the grid.
-        new_position = (new_position[0] % grid_size, new_position[1] % grid_size)
+        new_position = (new_position[0] %
+                        grid_size, new_position[1] % grid_size)
         return new_position
 
     #
@@ -66,8 +67,10 @@ def level_one():
             player2_moves += 1
 
         # Printing out number of moves for the players
-        print("The two players found each other after {} moves.".format(player1_moves + player2_moves))
-        print("Player 1 made {} moves, and Player 2 made {} moves.".format(player1_moves, player2_moves))
+        print("The two players found each other after {} moves.".format(
+            player1_moves + player2_moves))
+        print("Player 1 made {} moves, and Player 2 made {} moves.".format(
+            player1_moves, player2_moves))
 
         # Ask player if they want to play again
         play_again = input("Would you like to play again? (yes/no) ")
@@ -89,7 +92,7 @@ def level_two():
         while True:
             try:
                 num_players = int(input("How many players? (1-4): "))
-                if num_players < 1 or num_players > 4:
+                if num_players <= 1 or num_players > 4:
                     print("Invalid number of players.")
                 else:
                     return num_players
@@ -102,11 +105,14 @@ def level_two():
             while True:
                 try:
                     row = int(input(f"Enter the row for player {i + 1}: "))
-                    column = int(input(f"Enter the column for player {i + 1}: "))
+                    column = int(
+                        input(f"Enter the column for player {i + 1}: "))
                     if row < 0 or row >= size or column < 0 or column >= size:
-                        print("Invalid position. Please choose a position within the grid.")
+                        print(
+                            "Invalid position. Please choose a position within the grid.")
                     elif (row, column) in positions:
-                        print("Position already taken. Please choose a different position.")
+                        print(
+                            "Position already taken. Please choose a different position.")
                     else:
                         positions.append((row, column))
                         break
@@ -159,7 +165,8 @@ def level_two():
 
         print("Game Over!")
         for i in range(num_players):
-            print(f"Player {i + 1}: {moves[i]}, {moves_to_find[i]} moves to find.")
+            print(
+                f"Player {i + 1}: {moves[i]}, {moves_to_find[i]} moves to find.")
         print()
 
     # Main game loop
@@ -169,7 +176,7 @@ def level_two():
         positions = starting_positions(num_players, size)
         grid = build_grid(size)
 
-        #Place players on the grid
+        # Place players on the grid
         for i, position in enumerate(positions):
             row, column = position
             grid[row][column] = str(i+1)
@@ -178,14 +185,11 @@ def level_two():
         for row in grid:
             print(" ".join(row))
 
-
         play_game(grid, positions)
 
         replay = input("Would you like to play again? (y/n) ")
         if replay.lower() != 'y':
             break
-
-
 
 
 # Creates the game for grades 3-5
@@ -204,6 +208,7 @@ def level_three():
                     print(grid[i][j], end='')
             print()
     # Function to check if two or more players found each other
+
     def check_group(player_positions):
         groups = []
         for i in range(len(player_positions)):
@@ -219,27 +224,34 @@ def level_three():
             if len(group) > 1:
                 for pos in group:
                     player_positions.remove(pos)
-                player_positions.append(tuple([sum([pos[0] for pos in group])/len(group), sum([pos[1] for pos in group])/len(group)]))
+                player_positions.append(tuple(
+                    [sum([pos[0] for pos in group])/len(group), sum([pos[1] for pos in group])/len(group)]))
 
     # Function to play the game.
     def play_game(rows, cols, num_players, player_positions):
         grid = build_grid(rows, cols)
         for i in range(num_players):
-            row, col = map(int, input(f'Enter player {i+1} position (row, col): ').split())
+            row, col = map(int, input(
+                f'Enter player {i+1} position (row, col): ').split())
             player_positions.append((row, col))
         moves = 0
         while len(player_positions) < num_players:
             moves += 1
             for i in range(num_players):
-                direction = input(f'Player {i+1}, make a move (up, down, left, right): ')
+                direction = input(
+                    f'Player {i+1}, make a move (up, down, left, right): ')
                 if direction == 'up':
-                    player_positions[i] = (max(0, player_positions[i][0]-1, player_positions[i][1]))
+                    player_positions[i] = (
+                        max(0, player_positions[i][0]-1, player_positions[i][1]))
                 elif direction == 'down':
-                    player_positions[i] = min(rows-1, player_positions[i][0]+1), player_positions[i][1]
+                    player_positions[i] = min(
+                        rows-1, player_positions[i][0]+1), player_positions[i][1]
                 elif direction == 'left':
-                    player_positions[i] = (player_positions[i][0], max(0, player_positions[i][1]-1))
+                    player_positions[i] = (
+                        player_positions[i][0], max(0, player_positions[i][1]-1))
                 elif direction == 'right':
-                    player_positions[i] = (player_positions[i][0], min(cols-1, player_positions[i][1]+1))
+                    player_positions[i] = (player_positions[i][0], min(
+                        cols-1, player_positions[i][1]+1))
         check_group(player_positions)
         display_grid(grid, player_positions)
 
@@ -248,7 +260,8 @@ def level_three():
         distances = []
         for i in range(len(player_positions)-1):
             for j in range(i+1, len(player_positions)):
-                distance = ((player_positions[i][0]-player_positions[j][0])**2 + (player_positions[i][1]-player_positions[j][1])**2)**0.5
+                distance = ((player_positions[i][0]-player_positions[j][0])**2 + (
+                    player_positions[i][1]-player_positions[j][1])**2)**0.5
                 distances.append(distance)
         longest_run = max(distances) if distances else 0
         shortest_run = min(distances) if distances else 0
@@ -258,11 +271,13 @@ def level_three():
     # Main function.
     def main():
         while True:
-            rows, cols = map(int, input('Enter grid size (rows, cols): ').split())
+            rows, cols = map(int, input(
+                'Enter grid size (rows, cols): ').split())
             num_players = int(input('Enter the number of players (up to 4): '))
             player_positions = []
             play_game(rows, cols, num_players, player_positions)
-            longest_run, shortest_run, average_run = calculate_stats(player_positions)
+            longest_run, shortest_run, average_run = calculate_stats(
+                player_positions)
             print(f'\nGame finished in {len(player_positions)} moves.')
             print(f'Longest run without meeting: {longest_run:.2f}')
             print(f'Shortest run: {shortest_run:.2f}')
@@ -272,7 +287,6 @@ def level_three():
                 break
     if __name__ == '__main__':
         main()
-
 
 
 # Loop asking students which version of the game they want to play.
